@@ -1,8 +1,8 @@
-# cameraInferno-maya
+# Camera Inferno for Maya
 Autodesk Maya Plug-in for visualising camera burn-in text.
 
-The _Camera Inferno_ tool is a Maya Viewport 2.0 visualisation tool for
-displaying helpful, dynamic information for pre-vis, post-vis and
+The _Camera Inferno_ tool is a Maya Viewport 2.0 visualisation tool
+for displaying helpful, dynamic information for pre-vis, post-vis and
 tech-vis in Visual Effects.
 
 The _Camera Inferno_ tool has the following features:
