@@ -75,15 +75,26 @@ if environment variables are set up correctly.
 The current usage is very bare, simply create the node under a camera
 transform, and configure the node as desired. Below is an example set up.
 
+First, select a camera, then run the code below.
+
 ```python
 import maya.cmds
 
+# Load Plug-in
 maya.cmds.loadPlugin("dcCameraInferno", quiet=False)
+
+# Create Node
 sel = maya.cmds.ls(selection=True, long=True, type="transform") or []
 tfm = maya.cmds.createNode("transform", name="cameraInferno1", parent=sel[0])
 node = maya.cmds.createNode("dcCameraInferno", parent=tfm)
+
+# Make non-selectable.
 maya.cmds.setAttr(tfm + ".template", 1)
+
+# Create a default mask aspect ratio.
 maya.cmds.setAttr(node + ".maskAspectRatio", 1.7777)
+
+# Select the newly created node.
 maya.cmds.select(node, replace=True)
 ```
 
