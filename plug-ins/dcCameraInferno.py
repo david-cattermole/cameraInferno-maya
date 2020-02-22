@@ -880,6 +880,7 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
         user_name = getpass.getuser()
         file_path = maya.cmds.file(query=True, sceneName=True) or 'Untitled'
         file_name = os.path.basename(file_path)
+        file_name, file_ext = os.path.splitext(file_name)
         data.m_field_general_values = {
             # Environment Details
             'user_name': user_name,
