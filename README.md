@@ -26,38 +26,38 @@ The formatting for _Camera Inferno_ uses
 [Python String Formatting Operations](https://docs.python.org/2.7/library/stdtypes.html#string-formatting-operations).
 Please see the Python documentation for the small details of formatting strings.
 
-| Keyword Name              | Example Usage                     | Description                                                | Type            | Unit       |
-| -------------             | -------------                     | ------------                                               | ----            | ----       |
-| `a` or index 0            | `{a}` or `{0}`                    | Current field's value "A" DG evaluation value.             | Float or String | N/A        |
-| `b` or index 1            | `{b}` or `{1}`                    | Current field's value "B" DG evaluation value.             | Float or String | N/A        |
-| `c` or index 2            | `{c}` or `{2}`                    | Current field's value "C" DG evaluation value.             | Float or String | N/A        |
-| `d` or index 3            | `{d}` or `{3}`                    | Current field's value "D" DG evaluation value.             | Float or String | N/A        |
-| `user_name`               | `{user_name}`                     | User name currently logged in.                             | String          | N/A        |
-| `file_path`               | `{file_path}`                     | Full file path to the currently open Maya Scene file.      | String          | N/A        |
-| `file_name`               | `{file_name}`                     | Short file name to the currently open Maya Scene file.     | String          | N/A        |
-| `time`                    | `{time}`                          | Current time, as '9:42PM' format.                          | String          | N/A        |
-| `date`                    | `{date}`                          | Current date, as 'Mon 03 Feb 2020' format.                 | String          | N/A        |
-| `datetime`                | `{datetime}`                      | Current date and time, as 'Mon 03 Feb 9:42PM 2020' format. | String          | N/A        |
-| `time_iso`                | `{time_iso}`                      | Current time, as '21:42' format.                           | String          | N/A        |
-| `date_iso`                | `{date_iso}`                      | Current date, as '2020-02-03' format.                      | String          | N/A        |
-| `datetime_iso`            | `{datetime_iso}`                  | Current date and time, as '2020-02-03 21:42' format.       | String          | N/A        |
-| `camera_short_name`       | `{camera_short_name}`             | Name of the camera transform node, as short as possible.   | String          | N/A        |
-| `camera_long_name`        | `{camera_long_name}`              | Name of the camera transform node, as long as possible.    | String          | N/A        |
-| `frame_integer`           | `{frame_integer:04d}`             | Current frame number.                                      | Integer         | Frame      |
-| `frame_float`             | `{frame_float:.1f}`               | Current frame number.                                      | Float           | Frame      |
-| `film_back_width_inches`  | `{film_back_width_mm:.2f} in`     | Camera film back width                                     | Float           | Inch       |
-| `film_back_height_inches` | `{film_back_height_mm:.2f} in`    | Camera film back height                                    | Float           | Inch       |
-| `film_back_width_mm`      | `{film_back_width_mm:.2f} mm`     | Camera film back width                                     | Float           | Millimeter |
-| `film_back_height_mm`     | `{film_back_height_mm:.2f} mm`    | Camera film back height                                    | Float           | Millimeter |
-| `camera_tilt`             | `{camera_tilt:+.01f} deg`         | Camera world-space tilt (X axis in ZXY rotation order)     | Float           | Degree     |
-| `camera_pan`              | `{camera_pan:+.01f} deg`          | Camera world-space pan (Y axis in ZXY rotation order)      | Float           | Degree     |
-| `camera_roll`             | `{camera_roll:+.01f} deg`         | Camera world-space roll (Z axis in ZXY rotation order)     | Float           | Degree     |
-| `camera_shutter_angle`    | `{camera_shutter_angle:.02f} deg` | Camera shutter angle                                       | Float           | Degree     |
-| `lens_focal_length`       | `{lens_focal_length:.01f} mm`     | Lens focal length                                          | Float           | Millimeter |
-| `lens_focus_distance`     | `{lens_focus_distance:.01f}`      | Lens focus distance                                        | Float           | Maya Unit  |
-| `lens_f_stop`             | `{lens_f_stop:.01f}`              | Lens F-Stop number                                         | Float           | 1/F Number |
-| `lens_angle_of_view_x`    | `{lens_angle_of_view_x:.01f}`     | Lens horizontal angle of view                              | Float           | Degree     |
-| `lens_angle_of_view_y`    | `{lens_angle_of_view_y:.01f}`     | Lens vertical angle of view                                | Float           | Degree     |
+| Keyword Example Usage             | Description                                                                | Type            | Unit       |
+| -------------                     | ------------                                                               | ----            | ----       |
+| `{a}` or `{0}`                    | Current field's value "A" DG evaluation value.                             | Float or String | N/A        |
+| `{b}` or `{1}`                    | Current field's value "B" DG evaluation value.                             | Float or String | N/A        |
+| `{c}` or `{2}`                    | Current field's value "C" DG evaluation value.                             | Float or String | N/A        |
+| `{d}` or `{3}`                    | Current field's value "D" DG evaluation value.                             | Float or String | N/A        |
+| `{user_name}`                     | User name currently logged in.                                             | String          | N/A        |
+| `{file_path}`                     | Full file path to the currently open Maya Scene file.                      | String          | N/A        |
+| `{file_name}`                     | Short file name (no file extension) to the currently open Maya Scene file. | String          | N/A        |
+| `{time}`                          | Current time, as '9:42PM' format.                                          | String          | N/A        |
+| `{date}`                          | Current date, as 'Mon 03 Feb 2020' format.                                 | String          | N/A        |
+| `{datetime}`                      | Current date and time, as 'Mon 03 Feb 9:42PM 2020' format.                 | String          | N/A        |
+| `{time_iso}`                      | Current time, as '21:42' format.                                           | String          | N/A        |
+| `{date_iso}`                      | Current date, as '2020-02-03' format.                                      | String          | N/A        |
+| `{datetime_iso}`                  | Current date and time, as '2020-02-03 21:42' format.                       | String          | N/A        |
+| `{camera_short_name}`             | Name of the camera transform node, as short as possible.                   | String          | N/A        |
+| `{camera_long_name}`              | Name of the camera transform node, as long as possible.                    | String          | N/A        |
+| `{frame_integer:04d}`             | Current frame number.                                                      | Integer         | Frame      |
+| `{frame_float:.1f}`               | Current frame number.                                                      | Float           | Frame      |
+| `{film_back_width_inches:.2f}in`  | Camera film back width                                                     | Float           | Inch       |
+| `{film_back_height_inches:.2f}in` | Camera film back height                                                    | Float           | Inch       |
+| `{film_back_width_mm:.2f}mm`      | Camera film back width                                                     | Float           | Millimeter |
+| `{film_back_height_mm:.2f}mm`     | Camera film back height                                                    | Float           | Millimeter |
+| `{camera_tilt:+.01f}°`            | Camera world-space tilt (X axis in ZXY rotation order)                     | Float           | Degree     |
+| `{camera_pan:+.01f}°`             | Camera world-space pan (Y axis in ZXY rotation order)                      | Float           | Degree     |
+| `{camera_roll:+.01f}°`            | Camera world-space roll (Z axis in ZXY rotation order)                     | Float           | Degree     |
+| `{camera_shutter_angle:.02f}°`    | Camera shutter angle                                                       | Float           | Degree     |
+| `{lens_focal_length:.01f}mm`      | Lens focal length                                                          | Float           | Millimeter |
+| `{lens_focus_distance:.01f}`      | Lens focus distance                                                        | Float           | Maya Unit  |
+| `{lens_f_stop:.01f}`              | Lens F-Stop number                                                         | Float           | 1/F Number |
+| `{lens_angle_of_view_x:.01f}°`    | Lens horizontal angle of view                                              | Float           | Degree     |
+| `{lens_angle_of_view_y:.01f}°`    | Lens vertical angle of view                                                | Float           | Degree     |
 
 Each field attribute contains attributes `fieldValueA`, `..B`, `..C` and
 `..D`. By connecting DG node attributes and using `{a}` in the
