@@ -93,6 +93,9 @@ maya.cmds.select(node, replace=True)
   user-interface is provided; only the Maya Attribute Editor.
 - The mask screen space depth cannot be changed, it is currently
   hard-coded to 1.0 units from camera.
+  - To workaround this issue, you may scale the node under the camera
+    will allow moving the phyisical mask closer than 1.0 unit from
+    camera.
 - Maya versions below 2017 are not supported.
 - Performance is not optimised.
 - The use of the Maya camera's "Lens Squeeze Ratio" attribute may
