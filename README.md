@@ -112,6 +112,14 @@ maya.cmds.select(node, replace=True)
 - The use of the Maya camera's "Lens Squeeze Ratio" attribute may
   produce unexpected results.
 
+# Planned Features
+
+- A graphicial user interface with presets, and easy customisation.
+- Display the speed of the camera, as different speeds.
+- Ability to add static images to the burn-in, such as a logo.
+- Ability to draw directly on-top of the image, rather than needing to
+  worry about clipping planes or objects near/far from camera.
+
 # Installation
 
 The installation is basic and manual, simply copy the Python and MEL
