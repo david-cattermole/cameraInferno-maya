@@ -117,7 +117,7 @@ maya.cmds.select(node, replace=True)
 The installation is basic and manual, simply copy the Python and MEL
 files to your home directory's `maya` folder.
 
-- Copy `./plug-ins/dcCameraInferno.py` into the `${HOME}/maya/<maya version>/plug-ins`.
-- Copy `./scripts/AEdcCameraInfernoTemplate.mel` into the `${HOME}/maya/<maya version>/scripts`.
+- Copy `./plug-ins/dcCameraInferno.py` into the directory `${HOME}/maya/<maya version>/plug-ins`.
+- Copy `./scripts/AEdcCameraInfernoTemplate.mel` into the directory `${HOME}/maya/<maya version>/scripts`.
 
 Both Windows and Linux are supported, and Maya 2017 and 2018 have been tested.
