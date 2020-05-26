@@ -212,6 +212,8 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
     # Values
     m_scene_scale = None
     m_frames_per_second = None
+    m_ground_height = None
+    m_camera_speed_raw = None
 
     # Film Gate Attributes
     m_film_gate_enable = None
@@ -328,6 +330,27 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         eAttr.storable = True
         eAttr.keyable = False
         OpenMaya.MPxNode.addAttribute(HUDNode.m_scene_scale)
+
+        # Camera Speed Raw
+        HUDNode.m_camera_speed_raw = nAttr.create(
+            "cameraSpeedRaw", "camspdrw",
+            OpenMaya.MFnNumericData.kDouble, 0.0)
+        nAttr.readable = True
+        nAttr.writable = True
+        nAttr.storable = True
+        nAttr.keyable = True
+        OpenMaya.MPxNode.addAttribute(HUDNode.m_camera_speed_raw)
+
+        # Ground Height
+        HUDNode.m_ground_height = nAttr.create(
+            "groundHeight", "grndht",
+            OpenMaya.MFnNumericData.kDouble, 0.0)
+        nAttr.readable = True
+        nAttr.writable = True
+        nAttr.storable = True
+        nAttr.keyable = True
+        OpenMaya.MPxNode.addAttribute(HUDNode.m_ground_height)
+
         # Film Gate Enable attribute
         HUDNode.m_film_gate_enable = nAttr.create(
             "filmGateEnable", "flmgtenbl",
@@ -1053,10 +1076,12 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             scale_to_yards = 10000.0 / 9.144
             scale_to_miles = 10000.0 / 16093.4
 
+        # Camera
         camera_fn = OpenMaya.MFnCamera(camera_path)
         camera_tfm_path = camera_path.pop()
         camera_tfm_fn = OpenMaya.MFnTransform(camera_tfm_path)
         space = OpenMaya.MSpace.kWorld
+        camera_translate_vec = camera_tfm_fn.translation(space)
         camera_quat_rotation = camera_tfm_fn.rotation(space, asQuaternion=True)
         camera_rotation = camera_quat_rotation.asEulerRotation()
         rotation_order = OpenMaya.MEulerRotation.kZXY
@@ -1064,6 +1089,33 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
         camera_tilt = math.degrees(camera_rotation.x)
         camera_pan = math.degrees(camera_rotation.y)
         camera_roll = math.degrees(camera_rotation.z)
+
+        # Calculate the 'camera speed' in various different speed metics.
+        camera_speed_plug = OpenMaya.MPlug(node_obj, HUDNode.m_camera_speed_raw)
+        camera_speed_raw = camera_speed_plug.asDouble() * scene_scale_factor
+        frames_per_second_plug = OpenMaya.MPlug(node_obj, HUDNode.m_frames_per_second)
+        fps = frames_per_second_plug.asDouble()
+        camera_speed_kilometers_per_hour = camera_speed_raw * fps * 60 * 60 * 0.001
+        camera_speed_miles_per_hour = camera_speed_raw * fps * 60 * 60 * 0.000621371192
+        camera_speed_feet_per_hour = camera_speed_raw * fps * 60 * 60 * 3.28084
+        camera_speed_feet_per_second = camera_speed_raw * fps * 3.28084
+        camera_speed_meters_per_hour = camera_speed_raw * fps * 60 * 60
+        camera_speed_meters_per_second = camera_speed_raw * fps
+
+        # Add camera world-space distance relative to locator. For
+        #  example camera height above a plane.
+        ground_height_plug = OpenMaya.MPlug(node_obj, HUDNode.m_ground_height)
+        ground_height = ground_height_plug.asDouble()
+        camera_height_raw = (camera_translate_vec.y - ground_height)
+        camera_height_mm = camera_height_raw * scale_to_mm
+        camera_height_cm = camera_height_raw * scale_to_cm
+        camera_height_dm = camera_height_raw * scale_to_dm
+        camera_height_m = camera_height_raw * scale_to_m
+        camera_height_km = camera_height_raw * scale_to_km
+        camera_height_inches = camera_height_raw * scale_to_inches
+        camera_height_feet = camera_height_raw * scale_to_feet
+        camera_height_yards = camera_height_raw * scale_to_yards
+        camera_height_miles = camera_height_raw * scale_to_miles
 
         camera_short_name = camera_tfm_path.partialPathName()
         camera_long_name = camera_tfm_path.fullPathName()
@@ -1077,7 +1129,16 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
 
         focal_length = camera_fn.focalLength
         lens_f_stop = camera_fn.fStop
-        focus_distance = camera_fn.focusDistance
+        focus_distance_raw = camera_fn.focusDistance
+        focus_distance_mm = focus_distance_raw * scale_to_mm
+        focus_distance_cm = focus_distance_raw * scale_to_cm
+        focus_distance_dm = focus_distance_raw * scale_to_dm
+        focus_distance_m = focus_distance_raw * scale_to_m
+        focus_distance_km = focus_distance_raw * scale_to_km
+        focus_distance_inches = focus_distance_raw * scale_to_inches
+        focus_distance_feet = focus_distance_raw * scale_to_feet
+        focus_distance_yards = focus_distance_raw * scale_to_yards
+        focus_distance_miles = focus_distance_raw * scale_to_miles
         shutter_angle = math.degrees(camera_fn.shutterAngle)
 
         date_and_time_now = datetime.datetime.now()
@@ -1123,9 +1184,46 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             'camera_roll': camera_roll,
             'camera_shutter_angle': shutter_angle,
 
+            # Camera Height
+            'camera_height': camera_height_raw,
+            'camera_height_mm': camera_height_mm,
+            'camera_height_cm': camera_height_cm,
+            'camera_height_dm': camera_height_dm,
+            'camera_height_m': camera_height_m,
+            'camera_height_km': camera_height_km,
+            'camera_height_inches': camera_height_inches,
+            'camera_height_feet': camera_height_feet,
+            'camera_height_yards': camera_height_yards,
+            'camera_height_miles': camera_height_miles,
+
+            # Camera Speed
+            'camera_speed_kmph': camera_speed_kilometers_per_hour,
+            'camera_speed_km_per_hr': camera_speed_kilometers_per_hour,
+            'camera_speed_kilometers_per_hour': camera_speed_kilometers_per_hour,
+            'camera_speed_mph': camera_speed_miles_per_hour,
+            'camera_speed_mi_per_hr': camera_speed_miles_per_hour,
+            'camera_speed_miles_per_hour': camera_speed_miles_per_hour,
+            'camera_speed_ft_per_hr': camera_speed_feet_per_hour,
+            'camera_speed_feet_per_hour': camera_speed_feet_per_hour,
+            'camera_speed_ft_per_sec': camera_speed_feet_per_second,
+            'camera_speed_feet_per_second': camera_speed_feet_per_second,
+            'camera_speed_m_per_hr': camera_speed_meters_per_hour,
+            'camera_speed_meters_per_hour': camera_speed_meters_per_hour,
+            'camera_speed_m_per_sec': camera_speed_meters_per_second,
+            'camera_speed_meters_per_second': camera_speed_meters_per_second,
+
             # Lens
             'lens_focal_length': focal_length,
-            'lens_focus_distance': focus_distance,
+            'lens_focus_distance': focus_distance_raw,
+            'lens_focus_distance_mm': focus_distance_mm,
+            'lens_focus_distance_cm': focus_distance_cm,
+            'lens_focus_distance_dm': focus_distance_dm,
+            'lens_focus_distance_m': focus_distance_m,
+            'lens_focus_distance_km': focus_distance_km,
+            'lens_focus_distance_feet': focus_distance_feet,
+            'lens_focus_distance_yards': focus_distance_yards,
+            'lens_focus_distance_inches': focus_distance_inches,
+            'lens_focus_distance_miles': focus_distance_miles,
             'lens_f_stop': lens_f_stop,
             'lens_angle_of_view_x': angle_of_view_x,
             'lens_angle_of_view_y': angle_of_view_y,
