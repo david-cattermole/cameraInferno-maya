@@ -19,10 +19,24 @@
 global proc AEdcCameraInfernoTemplate(string $nodeName) {
     editorTemplate -beginScrollLayout;
 
-    editorTemplate -beginLayout "Node Attributes" -collapse 0;
-    editorTemplate -label "Film Gate" -addControl "filmGate";
-    editorTemplate -label "Mask" -addControl "mask";
-    editorTemplate -label "Fields" -addControl "field";
+
+    editorTemplate -beginLayout "Node Attributes" -collapse 1;
+        editorTemplate -beginLayout "Input Values" -collapse 1;
+            editorTemplate -label "Scene Scale" -addControl "sceneScale";
+            editorTemplate -label "Frames Per-Second" -addControl "framesPerSecond";
+            editorTemplate -label "Ground Height" -addControl "groundHeight";
+            editorTemplate -label "Camera Speed (Raw)" -addControl "cameraSpeedRaw";
+        editorTemplate -endLayout;
+
+        editorTemplate -beginLayout "HUD Size" -collapse 1;
+            editorTemplate -label "Text Size" -addControl "textSize";
+            editorTemplate -label "Point Size" -addControl "pointSize";
+            editorTemplate -label "Line Width" -addControl "lineWidth";
+        editorTemplate -endLayout;
+
+        editorTemplate -label "Film Gate" -addControl "filmGate";
+        editorTemplate -label "Mask" -addControl "mask";
+        editorTemplate -label "Fields" -addControl "field";
     editorTemplate -endLayout;
 
     // Base class attributes
