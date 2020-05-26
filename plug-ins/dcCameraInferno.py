@@ -341,7 +341,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
             "fieldType", "fldtyp",
             FIELD_TYPE_TEXT_2D_INDEX)
         for index, name in FIELD_TYPES:
-            eAttr.addField(name, index);
+            eAttr.addField(name, index)
         eAttr.readable = True
         eAttr.writable = True
         eAttr.storable = True
@@ -413,7 +413,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
             "fieldLineStyle", "fldlnstyl",
             OpenMayaRender.MUIDrawManager.kSolid)
         for index, name in LINE_STYLE_TYPES:
-            eAttr.addField(name, index);
+            eAttr.addField(name, index)
         eAttr.readable = True
         eAttr.writable = True
         eAttr.storable = True
@@ -440,7 +440,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         HUDNode.m_field_text_align = eAttr.create(
             "fieldTextAlign", "fldtxtalg", 0)
         for index, name in TEXT_ALIGN_TYPES:
-            eAttr.addField(name, index);
+            eAttr.addField(name, index)
         eAttr.readable = True
         eAttr.writable = True
         eAttr.storable = True
