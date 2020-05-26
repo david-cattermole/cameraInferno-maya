@@ -1229,10 +1229,15 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             'lens_angle_of_view_y': angle_of_view_y,
 
             # Units
+            'unit_mm': UNIT_MILLIMETERS,
             'unit_millimeter': UNIT_MILLIMETERS,
+            'unit_cm': UNIT_CENTIMETERS,
             'unit_centimeter': UNIT_CENTIMETERS,
+            'unit_m': UNIT_METERS,
             'unit_meter': UNIT_METERS,
+            'unit_dm': UNIT_DECIMETERS,
             'unit_decimeter': UNIT_DECIMETERS,
+            'unit_km': UNIT_KILOMETERS,
             'unit_kilometer': UNIT_KILOMETERS,
 
             'unit_in': UNIT_INCHES,
