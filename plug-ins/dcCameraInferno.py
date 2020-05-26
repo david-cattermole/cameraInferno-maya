@@ -48,11 +48,10 @@ import maya.api.OpenMaya as OpenMaya
 import maya.api.OpenMayaUI as OpenMayaUI
 import maya.api.OpenMayaRender as OpenMayaRender
 
-
 # Registered Node Id.
 PLUGIN_NODE_ID = 0x0012F183
 
-
+# Types of field indices.
 FIELD_TYPE_NONE_INDEX = 0
 FIELD_TYPE_TEXT_2D_INDEX = 1
 FIELD_TYPE_TEXT_3D_INDEX = 2
@@ -61,7 +60,7 @@ FIELD_TYPE_POINT_3D_INDEX = 4
 FIELD_TYPE_LINE_2D_INDEX = 5
 FIELD_TYPE_LINE_3D_INDEX = 6
 
-
+# Types of field names.
 FIELD_TYPE_NONE_NAME = 'None'
 FIELD_TYPE_TEXT_2D_NAME = 'Text 2D'
 FIELD_TYPE_TEXT_3D_NAME = 'Text 3D'
@@ -70,7 +69,7 @@ FIELD_TYPE_POINT_3D_NAME = 'Point 3D'
 FIELD_TYPE_LINE_2D_NAME = 'Line 2D'
 FIELD_TYPE_LINE_3D_NAME = 'Line 3D'
 
-
+# Links both name and indices together.
 FIELD_TYPES = [
     (FIELD_TYPE_NONE_INDEX, FIELD_TYPE_NONE_NAME),
     (FIELD_TYPE_TEXT_2D_INDEX, FIELD_TYPE_TEXT_2D_NAME),
@@ -81,7 +80,7 @@ FIELD_TYPES = [
     (FIELD_TYPE_LINE_3D_INDEX, FIELD_TYPE_LINE_3D_NAME),
 ]
 
-
+# Alignment values.
 ALIGN_BOTTOM_LEFT_VALUE = 0
 ALIGN_BOTTOM_CENTER_VALUE = 1
 ALIGN_BOTTOM_RIGHT_VALUE = 2
@@ -92,7 +91,7 @@ ALIGN_TOP_LEFT_VALUE = 6
 ALIGN_TOP_CENTER_VALUE = 7
 ALIGN_TOP_RIGHT_VALUE = 8
 
-
+# Text alignment values and names.
 TEXT_ALIGN_TYPES = [
     (ALIGN_BOTTOM_LEFT_VALUE, "Bottom-Left"),
     (ALIGN_BOTTOM_CENTER_VALUE, "Bottom-Center"),
@@ -105,7 +104,7 @@ TEXT_ALIGN_TYPES = [
     (ALIGN_TOP_RIGHT_VALUE, "Top-Right"),
 ]
 
-
+# Alignment mapping node values to VP2 values.
 MAP_TEXT_ALIGN_TO_ALIGN_HORIZONTAL = {
     ALIGN_BOTTOM_LEFT_VALUE: OpenMayaRender.MUIDrawManager.kLeft,
     ALIGN_BOTTOM_CENTER_VALUE: OpenMayaRender.MUIDrawManager.kCenter,
@@ -118,13 +117,12 @@ MAP_TEXT_ALIGN_TO_ALIGN_HORIZONTAL = {
     ALIGN_TOP_RIGHT_VALUE: OpenMayaRender.MUIDrawManager.kRight,
 }
 
-
 # Vertical alignment values
 ALIGN_BOTTOM_VALUE = 0
 ALIGN_MIDDLE_VALUE = 1
 ALIGN_TOP_VALUE = 2
 
-
+# Alignment mapping VP2 values to node values.
 MAP_TEXT_ALIGN_TO_ALIGN_VERTICAL = {
     0: ALIGN_BOTTOM_VALUE,
     1: ALIGN_BOTTOM_VALUE,
@@ -137,7 +135,7 @@ MAP_TEXT_ALIGN_TO_ALIGN_VERTICAL = {
     8: ALIGN_TOP_VALUE,
 }
 
-
+# Line styles names and values.
 LINE_STYLE_TYPES = [
     (OpenMayaRender.MUIDrawManager.kSolid, "Solid Line"),
     (OpenMayaRender.MUIDrawManager.kShortDotted, "Short Dotted Line"),
@@ -669,6 +667,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         super(HUDNode, self).__init__()
 
     def compute(self, plug, data):
+        # We don't need to compute anything in this node.
         return None
 
     def isBounded(self):
@@ -727,6 +726,14 @@ class HUDNodeData(OpenMaya.MUserData):
 
 
 def get_generic_attr_value_from_plug(x):
+    """
+    Query the value from a generic attribute plug.
+
+    :param x: The plug.
+    :type x: OpenMaya.MPlug
+
+    :return: The value from the attribute plug.
+    """
     data_handle = OpenMaya.MPlug.asMDataHandle(x)
     is_generic, is_numeric, is_null = data_handle.isGeneric()
     if not is_generic:
@@ -1934,14 +1941,16 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
 
         # Viewport origin is upper-left to bottom-right.
         _, _, port_width, port_height = frame_context.getViewportDimensions()
-        film_width_px, film_height_px, film_lower_left_px, film_upper_right_px = \
+        film_width_px, film_height_px, \
+        film_lower_left_px, film_upper_right_px = \
             self.get_film_coord_corners_in_pixels(
                 camera_fn,
                 port_width,
                 port_height
             )
 
-        film_width_screen, film_height_screen, film_lower_left_screen, film_upper_right_screen = \
+        film_width_screen, film_height_screen, \
+        film_lower_left_screen, film_upper_right_screen = \
             self.get_film_coord_corners_in_screen(
                 camera_fn,
                 port_width,
