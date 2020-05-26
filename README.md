@@ -110,7 +110,7 @@ maya.cmds.select(node, replace=True)
 - Maya versions below 2017 are not supported.
 - Performance is not optimised.
 - The use of the Maya camera's "Lens Squeeze Ratio" attribute may
-  produce unexpected results.
+  produce unexpected results of the film gate or film mask.
 
 # Planned Features
 
