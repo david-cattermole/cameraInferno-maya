@@ -144,6 +144,29 @@ LINE_STYLE_TYPES = [
     (OpenMayaRender.MUIDrawManager.kDotted, "Dotted Line"),
 ]
 
+# Scene scale names.
+SCENE_SCALE_MILLIMETER_NAME = "millimeter"
+SCENE_SCALE_CENTIMETER_NAME = "centimeter"
+SCENE_SCALE_METER_NAME = "meter"
+SCENE_SCALE_DECIMETER_NAME = "decimeter"
+SCENE_SCALE_KILOMETER_NAME = "kilometer"
+
+# Scene scale values.
+SCENE_SCALE_MILLIMETER_VALUE = 0
+SCENE_SCALE_CENTIMETER_VALUE = 1
+SCENE_SCALE_METER_VALUE = 2
+SCENE_SCALE_DECIMETER_VALUE = 3
+SCENE_SCALE_KILOMETER_VALUE = 4
+
+# Scene scale.
+SCENE_SCALES = [
+    (SCENE_SCALE_MILLIMETER_NAME, SCENE_SCALE_MILLIMETER_VALUE),
+    (SCENE_SCALE_CENTIMETER_NAME, SCENE_SCALE_CENTIMETER_VALUE),
+    (SCENE_SCALE_METER_NAME, SCENE_SCALE_METER_VALUE),
+    (SCENE_SCALE_DECIMETER_NAME, SCENE_SCALE_DECIMETER_VALUE),
+    (SCENE_SCALE_KILOMETER_NAME, SCENE_SCALE_KILOMETER_VALUE)
+]
+
 # Default sizes for various on-screen stuff.
 TEXT_SIZE_DEFAULT_VALUE = 1.0
 POINT_SIZE_DEFAULT_VALUE = 1.0
@@ -167,6 +190,10 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
     m_text_size = None
     m_line_width = None
     m_point_size = None
+
+    # Values
+    m_scene_scale = None
+    m_frames_per_second = None
 
     # Film Gate Attributes
     m_film_gate_enable = None
@@ -262,6 +289,27 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         nAttr.keyable = True
         OpenMaya.MPxNode.addAttribute(HUDNode.m_point_size)
 
+        # Frames Per-Second
+        HUDNode.m_frames_per_second = nAttr.create(
+            "framesPerSecond", "fps",
+            OpenMaya.MFnNumericData.kDouble, 24.0)
+        nAttr.readable = True
+        nAttr.writable = True
+        nAttr.storable = True
+        nAttr.keyable = True
+        OpenMaya.MPxNode.addAttribute(HUDNode.m_frames_per_second)
+
+        # Scene Scale
+        HUDNode.m_scene_scale = eAttr.create(
+            "sceneScale", "scnscl",
+            SCENE_SCALE_DECIMETER_VALUE)
+        for name, value in SCENE_SCALES:
+            eAttr.addField(name, value)
+        eAttr.readable = True
+        eAttr.writable = True
+        eAttr.storable = True
+        eAttr.keyable = False
+        OpenMaya.MPxNode.addAttribute(HUDNode.m_scene_scale)
         # Film Gate Enable attribute
         HUDNode.m_film_gate_enable = nAttr.create(
             "filmGateEnable", "flmgtenbl",
@@ -906,6 +954,86 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
         data.m_field_text_values = self.get_field_text_value(
             obj_path,
             data.m_field_text_values)
+
+        # Scene Scale
+        scene_scale_plug = OpenMaya.MPlug(node_obj, HUDNode.m_scene_scale)
+        scene_scale = scene_scale_plug.asDouble()
+        scene_scale_factor = 1.0
+        scale_to_mm = 1.0
+        scale_to_cm = 1.0
+        scale_to_dm = 1.0
+        scale_to_m = 1.0
+        scale_to_km = 1.0
+        scale_to_inches = 1.0
+        scale_to_feet = 1.0
+        scale_to_yards = 1.0
+        scale_to_miles = 1.0
+        scene_scale_unit = 'unit'
+        if scene_scale == SCENE_SCALE_MILLIMETER_VALUE:
+            scene_scale_unit = UNIT_MILLIMETERS
+            scene_scale_factor = 0.001
+            # Millimeters to...
+            scale_to_mm = 1.0
+            scale_to_cm = 0.1
+            scale_to_dm = 0.01
+            scale_to_m = 0.001
+            scale_to_km = 1e-6
+            scale_to_inches = 0.1 / 2.54
+            scale_to_feet = 0.1 / (2.54 * 12.0)
+            scale_to_yards = 0.01 / 9.144
+            scale_to_miles = 1.0 / 1609340.0
+        elif scene_scale == SCENE_SCALE_CENTIMETER_VALUE:
+            scene_scale_unit = UNIT_CENTIMETERS
+            scene_scale_factor = 0.01
+            # Centimeters to...
+            scale_to_mm = 10.0
+            scale_to_cm = 1.0
+            scale_to_dm = 10.0
+            scale_to_m = 0.01
+            scale_to_km = 1e-5
+            scale_to_inches = 1.0 / 2.54
+            scale_to_feet = 1.0 / (2.54 * 12.0)
+            scale_to_yards = 0.1 / 9.144
+            scale_to_miles = 1.0 / 160934.0
+        elif scene_scale == SCENE_SCALE_DECIMETER_VALUE:
+            scene_scale_unit = UNIT_DECIMETERS
+            scene_scale_factor = 0.1
+            # Decimeters to...
+            scale_to_mm = 100.0
+            scale_to_cm = 10.0
+            scale_to_dm = 1.0
+            scale_to_m = 0.1
+            scale_to_km = 1e-4
+            scale_to_inches = 10.0 / 2.54
+            scale_to_feet = 10.0 / (2.54 * 12.0)
+            scale_to_yards = 1.0 / 9.144
+            scale_to_miles = 1.0 / 16093.4
+        elif scene_scale == SCENE_SCALE_METER_VALUE:
+            scene_scale_unit = UNIT_METERS
+            scene_scale_factor = 1.0
+            # Meters to...
+            scale_to_mm = 1000.0
+            scale_to_cm = 100.0
+            scale_to_dm = 10.0
+            scale_to_m = 1.0
+            scale_to_km = 1e-3
+            scale_to_inches = 100.0 / 2.54
+            scale_to_feet = 100.0 / (2.54 * 12.0)
+            scale_to_yards = 10.0 / 9.144
+            scale_to_miles = 10.0 / 16093.4
+        elif scene_scale == SCENE_SCALE_KILOMETER_VALUE:
+            scene_scale_unit = UNIT_KILOMETERS
+            scene_scale_factor = 1000.0
+            # Kilometers to...
+            scale_to_mm = 1000000.0
+            scale_to_cm = 100000.0
+            scale_to_dm = 10000.0
+            scale_to_m = 1000.0
+            scale_to_km = 1.0
+            scale_to_inches = 100000.0 / 2.54
+            scale_to_feet = 100000.0 / (2.54 * 12.0)
+            scale_to_yards = 10000.0 / 9.144
+            scale_to_miles = 10000.0 / 16093.4
 
         camera_fn = OpenMaya.MFnCamera(camera_path)
         camera_tfm_path = camera_path.pop()
