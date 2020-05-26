@@ -50,6 +50,9 @@ import maya.api.OpenMayaRender as OpenMayaRender
 
 # Registered Node Id.
 PLUGIN_NODE_ID = 0x0012F183
+PLUGIN_NODE_NAME = "dcCameraInferno"
+PLUGIN_NODE_AUTHOR_STRING = "David Cattermole"
+PLUGIN_NODE_VERSION_STRING = "0.2"
 
 # Types of field indices.
 FIELD_TYPE_NONE_INDEX = 0
@@ -2378,10 +2381,13 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
 
 def initializePlugin(obj):
     """Called to load and allocate the new plug-in."""
-    plugin = OpenMaya.MFnPlugin(obj, "David Cattermole", "0.1", "Any")
+    plugin = OpenMaya.MFnPlugin(
+        obj,
+        PLUGIN_NODE_AUTHOR_STRING,
+        PLUGIN_NODE_VERSION_STRING, "Any")
     try:
         plugin.registerNode(
-            "dcCameraInferno",
+            PLUGIN_NODE_NAME,
             HUDNode.node_id,
             HUDNode.creator,
             HUDNode.initialize,
