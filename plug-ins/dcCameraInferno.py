@@ -144,6 +144,24 @@ LINE_STYLE_TYPES = [
     (OpenMayaRender.MUIDrawManager.kDotted, "Dotted Line"),
 ]
 
+# Units
+UNIT_MILES = 'mi'
+UNIT_FEET = "'"
+UNIT_INCHES = '"'
+UNIT_MILLIMETERS = 'mm'
+UNIT_CENTIMETERS = 'cm'
+UNIT_METERS = 'm'
+UNIT_DECIMETERS = 'dm'
+UNIT_KILOMETERS = 'km'
+UNIT_HOURS = 'h'
+UNIT_SECONDS = 's'
+UNIT_KILOMETERS_PER_HOUR = "km/h"
+UNIT_MILES_PER_HOUR = "mph"
+UNIT_FEET_PER_HOUR = "ft/h"
+UNIT_FEET_PER_SECOND = "ft/s"
+UNIT_METERS_PER_HOUR = "m/h"
+UNIT_METERS_PER_SECOND = "m/s"
+
 # Scene scale names.
 SCENE_SCALE_MILLIMETER_NAME = "millimeter"
 SCENE_SCALE_CENTIMETER_NAME = "centimeter"
@@ -1111,6 +1129,48 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             'lens_f_stop': lens_f_stop,
             'lens_angle_of_view_x': angle_of_view_x,
             'lens_angle_of_view_y': angle_of_view_y,
+
+            # Units
+            'unit_millimeter': UNIT_MILLIMETERS,
+            'unit_centimeter': UNIT_CENTIMETERS,
+            'unit_meter': UNIT_METERS,
+            'unit_decimeter': UNIT_DECIMETERS,
+            'unit_kilometer': UNIT_KILOMETERS,
+
+            'unit_in': UNIT_INCHES,
+            'unit_inch': UNIT_INCHES,
+            'unit_ft': UNIT_FEET,
+            'unit_feet': UNIT_FEET,
+            'unit_mi': UNIT_MILES,
+            'unit_mile': UNIT_MILES,
+
+            'unit_hour': UNIT_HOURS,
+            'unit_hr': UNIT_HOURS,
+            'unit_second': UNIT_SECONDS,
+            'unit_sec': UNIT_SECONDS,
+
+            'unit_kmph': UNIT_KILOMETERS_PER_HOUR,
+            'unit_km_per_hr': UNIT_KILOMETERS_PER_HOUR,
+            'unit_kilometers_per_hour': UNIT_KILOMETERS_PER_HOUR,
+
+            'unit_mph': UNIT_MILES_PER_HOUR,
+            'unit_mi_per_hr': UNIT_MILES_PER_HOUR,
+            'unit_miles_per_hour': UNIT_MILES_PER_HOUR,
+
+            'unit_ft_per_hr': UNIT_FEET_PER_HOUR,
+            'unit_feet_per_hour': UNIT_FEET_PER_HOUR,
+
+            'unit_ft_per_sec': UNIT_FEET_PER_SECOND,
+            'unit_feet_per_second': UNIT_FEET_PER_SECOND,
+
+            'unit_m_per_hr': UNIT_METERS_PER_HOUR,
+            'unit_meters_per_hour': UNIT_METERS_PER_HOUR,
+
+            'unit_m_per_sec': UNIT_METERS_PER_SECOND,
+            'unit_meters_per_second': UNIT_METERS_PER_SECOND,
+
+            'scene_scale_unit': scene_scale_unit,
+            'scene_scale_factor': scene_scale_factor,
         }
 
         # Query Generic data.
