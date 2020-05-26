@@ -150,6 +150,9 @@ LINE_STYLE_TYPES = [
 TEXT_SIZE_DEFAULT_VALUE = 1.0
 POINT_SIZE_DEFAULT_VALUE = 1.0
 LINE_WIDTH_DEFAULT_VALUE = 1.0
+FIELD_TEXT_SIZE_DEFAULT_VALUE = 1.0
+FIELD_POINT_SIZE_DEFAULT_VALUE = 1.0
+FIELD_LINE_WIDTH_DEFAULT_VALUE = 1.0
 
 
 def maya_useNewAPI():
@@ -161,6 +164,11 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
     node_id = OpenMaya.MTypeId(PLUGIN_NODE_ID)
     draw_db_classification = "drawdb/geometry/dcCameraInferno"
     draw_registrant_id = "dcCameraInfernoNodePlugin"
+
+    # Global Size Values
+    m_text_size = None
+    m_line_width = None
+    m_point_size = None
 
     # Film Gate Attributes
     m_film_gate_enable = None
@@ -220,6 +228,41 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         cAttr = OpenMaya.MFnCompoundAttribute()
         eAttr = OpenMaya.MFnEnumAttribute()
         gAttr = OpenMaya.MFnGenericAttribute()
+        uAttr = OpenMaya.MFnUnitAttribute()
+        mAttr = OpenMaya.MFnMessageAttribute()
+
+        # Text Size
+        HUDNode.m_text_size = nAttr.create(
+            "textSize", "txtsz",
+            OpenMaya.MFnNumericData.kDouble,
+            TEXT_SIZE_DEFAULT_VALUE)
+        nAttr.readable = True
+        nAttr.writable = True
+        nAttr.storable = True
+        nAttr.keyable = True
+        OpenMaya.MPxNode.addAttribute(HUDNode.m_text_size)
+
+        # Line Width
+        HUDNode.m_line_width = nAttr.create(
+            "lineWidth", "lnwdth",
+            OpenMaya.MFnNumericData.kDouble,
+            LINE_WIDTH_DEFAULT_VALUE)
+        nAttr.readable = True
+        nAttr.writable = True
+        nAttr.storable = True
+        nAttr.keyable = True
+        OpenMaya.MPxNode.addAttribute(HUDNode.m_line_width)
+
+        # Point Size
+        HUDNode.m_point_size = nAttr.create(
+            "pointSize", "pntsz",
+            OpenMaya.MFnNumericData.kDouble,
+            POINT_SIZE_DEFAULT_VALUE)
+        nAttr.readable = True
+        nAttr.writable = True
+        nAttr.storable = True
+        nAttr.keyable = True
+        OpenMaya.MPxNode.addAttribute(HUDNode.m_point_size)
 
         # Film Gate Enable attribute
         HUDNode.m_film_gate_enable = nAttr.create(
@@ -370,7 +413,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         HUDNode.m_field_point_size = nAttr.create(
             "fieldPointSize", "fldpntsz",
             OpenMaya.MFnNumericData.kFloat,
-            POINT_SIZE_DEFAULT_VALUE,
+            FIELD_POINT_SIZE_DEFAULT_VALUE,
         )
         nAttr.readable = True
         nAttr.writable = True
@@ -401,7 +444,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         HUDNode.m_field_line_width = nAttr.create(
             "fieldLineWidth", "fldlnwdth",
             OpenMaya.MFnNumericData.kFloat,
-            LINE_WIDTH_DEFAULT_VALUE
+            FIELD_LINE_WIDTH_DEFAULT_VALUE
         )
         nAttr.readable = True
         nAttr.writable = True
@@ -487,7 +530,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         HUDNode.m_field_text_size = nAttr.create(
             "fieldTextSize", "fldtxtsz",
             OpenMaya.MFnNumericData.kFloat,
-            TEXT_SIZE_DEFAULT_VALUE,
+            FIELD_TEXT_SIZE_DEFAULT_VALUE,
         )
         nAttr.readable = True
         nAttr.writable = True
@@ -637,6 +680,10 @@ class HUDNodeData(OpenMaya.MUserData):
     def __init__(self):
         delete_after_use = False
         super(HUDNodeData, self).__init__(delete_after_use)
+        self.m_text_size = 1.0
+        self.m_point_size = 1.0
+        self.m_line_width = 1.0
+
         self.m_film_gate_enable = True
         self.m_film_gate_color = OpenMaya.MColor()
         self.m_film_gate_alpha = 1.0
@@ -737,6 +784,14 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
         if not isinstance(data, HUDNodeData):
             data = HUDNodeData()
         node_obj = obj_path.node()
+
+        # Global Size attributes.
+        text_size_plug = OpenMaya.MPlug(node_obj, HUDNode.m_text_size)
+        point_size_plug = OpenMaya.MPlug(node_obj, HUDNode.m_point_size)
+        line_width_plug = OpenMaya.MPlug(node_obj, HUDNode.m_line_width)
+        data.m_text_size = text_size_plug.asDouble()
+        data.m_point_size = point_size_plug.asDouble()
+        data.m_line_width = line_width_plug.asDouble()
 
         # Get Film Gate data.
         film_gate_enable_plug = OpenMaya.MPlug(node_obj, HUDNode.m_film_gate_enable)
@@ -1721,6 +1776,9 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
     @classmethod
     def draw_field(cls,
                    draw_manager,
+                   text_size_multiplier,
+                   point_size_multiplier,
+                   line_width_multiplier,
                    field_data,
                    field_general_values,
                    obj_path,
@@ -1756,7 +1814,8 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             cls.draw_field_2d_text(
                 draw_manager,
                 pos_a,
-                text_size, text_align,
+                text_size * text_size_multiplier,
+                text_align,
                 text_bold, text_italic, text_font_name,
                 text_color, text_alpha,
                 draw_text,
@@ -1775,7 +1834,8 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             cls.draw_field_3d_text(
                 draw_manager,
                 obj_path, pos_a,
-                text_size, text_align,
+                text_size * text_size_multiplier,
+                text_align,
                 text_bold, text_italic, text_font_name,
                 text_color, text_alpha,
                 draw_text,
@@ -1788,7 +1848,8 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
         elif field_type == FIELD_TYPE_POINT_2D_INDEX:
             cls.draw_field_2d_point(
                 draw_manager,
-                pos_a, point_size,
+                pos_a,
+                point_size * point_size_multiplier,
                 point_color, point_alpha,
                 pos_lower_left, pos_lower_right,
                 pos_upper_left, pos_upper_right,
@@ -1799,7 +1860,8 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
         elif field_type == FIELD_TYPE_POINT_3D_INDEX:
             cls.draw_field_3d_point(
                 draw_manager,
-                obj_path, pos_a, point_size,
+                obj_path, pos_a,
+                point_size * point_size_multiplier,
                 point_color, point_alpha,
                 pos_lower_left, pos_lower_right,
                 pos_upper_left, pos_upper_right,
@@ -1811,7 +1873,8 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             cls.draw_field_2d_line(
                 draw_manager,
                 pos_a, pos_b,
-                line_width, line_style,
+                line_width * line_width_multiplier,
+                line_style,
                 line_color, line_alpha,
                 pos_lower_left, pos_lower_right,
                 pos_upper_left, pos_upper_right,
@@ -1823,7 +1886,8 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             cls.draw_field_3d_line(
                 draw_manager,
                 obj_path, pos_a, pos_b,
-                line_width, line_style,
+                line_width * line_width_multiplier,
+                line_style,
                 line_color, line_alpha,
                 pos_lower_left, pos_lower_right,
                 pos_upper_left, pos_upper_right,
@@ -1840,6 +1904,11 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
         user_data = data
         if not isinstance(user_data, HUDNodeData):
             return
+
+        # Global size multipliers.
+        text_size_multiplier = user_data.m_text_size
+        point_size_multiplier = user_data.m_point_size
+        line_width_multiplier = user_data.m_line_width
 
         # Get the camera.
         #
@@ -1992,6 +2061,9 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
         for field_data in fields_data:
             self.draw_field(
                 draw_manager,
+                text_size_multiplier,
+                point_size_multiplier,
+                line_width_multiplier,
                 field_data,
                 field_general_values,
                 obj_path,
