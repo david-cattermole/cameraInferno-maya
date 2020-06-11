@@ -111,6 +111,6 @@ def main():
     return
 
 
-def open_window():
-    import dcCameraInferno.ui.main
-    ui = dcCameraInferno.ui.main.open_window()
+# def open_window():
+#     import dcCameraInferno.ui.main
+#     ui = dcCameraInferno.ui.main.open_window()
