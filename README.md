@@ -230,31 +230,30 @@ variables are automatically-available consistently.
 
 # Usage
 
-The current usage is very bare, simply create the node under a camera
-transform, and configure the node as desired. Below is an example set up.
+The scripts installed with Camera Inferno will allow you to create a
+set up fairly easily.
 
-First, select a camera, then run the code below.
+Run the code below to create a new camera with the Camera Inferno HUD set up:
 
 ```python
-import maya.cmds
-
-# Load Plug-in
-maya.cmds.loadPlugin("dcCameraInferno", quiet=False)
-
-# Create Node
-sel = maya.cmds.ls(selection=True, long=True, type="transform") or []
-tfm = maya.cmds.createNode("transform", name="cameraInferno1", parent=sel[0])
-node = maya.cmds.createNode("dcCameraInferno", parent=tfm)
-
-# Make non-selectable.
-maya.cmds.setAttr(tfm + ".template", 1)
-
-# Create a default mask aspect ratio.
-maya.cmds.setAttr(node + ".maskAspectRatio", 1.7777)
-
-# Select the newly created node.
-maya.cmds.select(node, replace=True)
+import dcCameraInferno.tool as tool
+tool.main()
 ```
+
+If you wish to apply the Camera Inferno HUD to an existing camera,
+first select a camera node and run the Python code above.
+
+# Installation
+
+The installation is basic and manual, simply copy the Python and MEL
+files to your home directory's `maya` folder.
+
+- Copy `./plug-ins/dcCameraInferno.py` into the directory `${HOME}/maya/<maya version>/plug-ins`.
+- Copy `./plug-ins/dcVelocity.py` into the directory `${HOME}/maya/<maya version>/plug-ins`.
+- Copy `./scripts/AEdcCameraInfernoTemplate.mel` into the directory `${HOME}/maya/<maya version>/scripts`.
+- Copy `./python/dcCameraInferno` into the directory `${HOME}/maya/<maya version>/scripts`.
+
+Both Windows and Linux are supported, and Maya 2017 and 2018 have been tested.
 
 # Known Issues
 
@@ -263,7 +262,7 @@ maya.cmds.select(node, replace=True)
 - The mask screen space depth cannot be changed, it is currently
   hard-coded to 1.0 units from camera.
   - To workaround this issue, you may scale the node under the camera
-    will allow moving the physical mask closer than 1.0 unit from
+    to allow moving the physical mask closer than 1.0 unit from the
     camera.
 - Maya versions below 2017 are not supported.
 - Performance is not optimised.
@@ -276,13 +275,4 @@ maya.cmds.select(node, replace=True)
 - Ability to add static images to the burn-in, such as a logo.
 - Ability to draw directly on-top of the image, rather than needing to
   worry about clipping planes or objects near/far from camera.
-
-# Installation
-
-The installation is basic and manual, simply copy the Python and MEL
-files to your home directory's `maya` folder.
-
-- Copy `./plug-ins/dcCameraInferno.py` into the directory `${HOME}/maya/<maya version>/plug-ins`.
-- Copy `./scripts/AEdcCameraInfernoTemplate.mel` into the directory `${HOME}/maya/<maya version>/scripts`.
-
-Both Windows and Linux are supported, and Maya 2017 and 2018 have been tested.
+- Use Maya "Modules" to simplify installation of the scripts and plug-in.
