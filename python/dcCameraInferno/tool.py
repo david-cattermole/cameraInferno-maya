@@ -40,8 +40,9 @@ def add_speed_attributes_to_transform(tfm_node):
     dst = '%s.inputPoint' % velocity_node
     maya.cmds.connectAttr(src, dst)
 
-    annot_tfm = maya.cmds.createNode('transform', parent=tfm_node)
-    annot_shp = maya.cmds.createNode('annotationShape', parent=annot_tfm)
+    annot_tfm = maya.cmds.createNode('transform', parent=tfm_node, name='dummy')
+    annot_shp = maya.cmds.createNode('annotationShape', parent=annot_tfm, name='dummyShape')
+    maya.cmds.setAttr('%s.displayArrow' % annot_shp, 0)
     src = '%s.outDummyString' % velocity_node
     dst = '%s.text' % annot_shp
     maya.cmds.connectAttr(src, dst)
