@@ -51,6 +51,11 @@ The current date and time, in various formats.
 | `{time_iso}`     | Current time, as '21:42' format.                           | String | N/A  |
 | `{date_iso}`     | Current date, as '2020-02-03' format.                      | String | N/A  |
 | `{datetime_iso}` | Current date and time, as '2020-02-03 21:42' format.       | String | N/A  |
+| `{date_year}`    | Current date year as #### number.                          | String | N/A  |
+| `{date_month}`   | Current date month as ## number.                           | String | N/A  |
+| `{date_day}`     | Current date day as ## number.                             | String | N/A  |
+| `{time_hour}`    | Current time hour as 24 hour number.                       | String | N/A  |
+| `{time_minute}`  | Current time minute as ## number.                          | String | N/A  |
 
 ## Camera Name Keywords
 
