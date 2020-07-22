@@ -1161,8 +1161,8 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
 
             # Date and Time
             'time_iso': time_now.strftime('%H:%M'),
-            'date_iso': date_now.strftime('%Y-%M-%d'),
-            'datetime_iso': date_and_time_now.strftime('%Y-%M-%d %H:%M'),
+            'date_iso': date_now.strftime('%Y-%m-%d'),
+            'datetime_iso': date_and_time_now.strftime('%Y-%m-%d %H:%M'),
             'time': time_now.strftime('%I:%M%p'),
             'date': date_now.strftime('%a %b %d %Y'),
             'datetime': date_and_time_now.strftime('%a %b %d %I:%M%p %Y'),
