@@ -1147,6 +1147,17 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
         date_and_time_now = datetime.datetime.now()
         time_now = date_and_time_now.time()
         date_now = date_and_time_now.date()
+        time_iso = time_now.strftime('%H:%M')
+        time_str = time_now.strftime('%I:%M%p')
+        date_iso = date_now.strftime('%Y-%m-%d')
+        date_str = date_now.strftime('%a %b %d %Y')
+        datetime_iso = date_and_time_now.strftime('%Y-%m-%d %H:%M')
+        datetime_str = date_and_time_now.strftime('%a %b %d %I:%M%p %Y')
+        time_hour = time_now.strftime('%H')
+        time_minute = time_now.strftime('%M')
+        date_year = date_now.strftime('%Y')
+        date_month = date_now.strftime('%m')
+        date_day = date_now.strftime('%d')
 
         frame = maya.cmds.currentTime(query=True)
         user_name = getpass.getuser()
@@ -1160,12 +1171,17 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             'file_name': file_name,
 
             # Date and Time
-            'time_iso': time_now.strftime('%H:%M'),
-            'date_iso': date_now.strftime('%Y-%m-%d'),
-            'datetime_iso': date_and_time_now.strftime('%Y-%m-%d %H:%M'),
-            'time': time_now.strftime('%I:%M%p'),
-            'date': date_now.strftime('%a %b %d %Y'),
-            'datetime': date_and_time_now.strftime('%a %b %d %I:%M%p %Y'),
+            'time_iso': time_iso,
+            'date_iso': date_iso,
+            'datetime_iso': datetime_iso,
+            'time': time_str,
+            'date': date_str,
+            'datetime': datetime_str,
+            'time_hour': time_hour,
+            'time_minute': time_minute,
+            'date_year': date_year,
+            'date_month': date_month,
+            'date_day': date_day,
 
             # Camera Name
             'camera_short_name': camera_short_name,
