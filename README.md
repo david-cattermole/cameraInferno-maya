@@ -89,7 +89,7 @@ The rotation values are calculated in ZXY rotation order.
 
 ## Camera Height Keywords
 
-The camera's height with measurement unit. 
+The camera's height with measurement unit.
 
 | Example Usage                 | Description              | Type  | Unit       |
 | -------------                 | ------------             | ----  | ----       |
@@ -111,7 +111,7 @@ These keywords use the `dcCameraInferno` node's `cameraSpeedRaw` attribute.
 
 The `cameraSpeedRaw` attribute expects values in the current Maya time
 unit (usually seconds). This feature is expected to work with the
-`dcVelocity` node type, and `outSpeedRaw` attribute.  
+`dcVelocity` node type, and `outSpeedRaw` attribute.
 
 | Example Usage                             | Description                | Type  | Unit          |
 | -------------                             | ------------               | ----  | ----          |
@@ -143,7 +143,7 @@ Film Back size keywords, with choice of measurement unit.
 
 ## Lens Attributes Keywords
 
-Lens attributes are available via keywords, and sometimes multiple 
+Lens attributes are available via keywords, and sometimes multiple
 different measurement units.
 
 | Example Usage                       | Description                   | Type  | Unit       |
@@ -224,7 +224,7 @@ etc) or string data type can be connected and used.
 
 ## Environment Variable Keywords
 
-After all keywords are substituted, any strings that appear as a 
+After all keywords are substituted, any strings that appear as a
 (UNIX-style) environment variable will be replaced.
 
 For example `$USER $PROJECT/$SHOT`, may become `David MyProject/001_0010`,
@@ -248,6 +248,13 @@ tool.main()
 If you wish to apply the Camera Inferno HUD to an existing camera,
 first select a camera node and run the Python code above.
 
+## Default Presets
+
+Once a `dcCameraInferno` node is created, you may select an Attribute Editor
+_Preset_ as a starting point for your HUD setup. To use one of the provided
+presets, simply select the `dcCameraInferno` node, open the _Attribute Editor_
+and press the _Presets*_ button (upper-right), then choose _Replace_.
+
 # Installation
 
 Please follow the instructions in
@@ -256,17 +263,15 @@ to install _Camera Inferno_.
 
 # Known Issues
 
-- This is a Maya plug-in only, no configuration or friendly
-  user-interface is provided; only the Maya Attribute Editor.
-- The mask screen space depth cannot be changed, it is currently
-  hard-coded to 1.0 units from camera.
-  - To workaround this issue, you may scale the node under the camera
-    to allow moving the physical mask closer than 1.0 unit from the
-    camera.
+- This is friendly user-interface is provided; only the Maya Attribute Editor.
+  - Please use the Maya Attribute Editor 'presets' to get started.
 - Maya versions below 2017 are not supported.
 - Performance is not optimised.
 - The use of the Maya camera's "Lens Squeeze Ratio" attribute may
   produce unexpected results of the film gate or film mask.
+- Using _Camera Inferno_ with Maya 2019 with Background Caching enabled may
+  cause issues, if this happens please disable Background caching to use the
+  plug-in.
 
 # Planned Features
 
