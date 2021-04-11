@@ -250,15 +250,9 @@ first select a camera node and run the Python code above.
 
 # Installation
 
-The installation is basic and manual, simply copy the Python and MEL
-files to your home directory's `maya` folder.
-
-- Copy `./plug-ins/dcCameraInferno.py` into the directory `${HOME}/maya/<maya version>/plug-ins`.
-- Copy `./plug-ins/dcVelocity.py` into the directory `${HOME}/maya/<maya version>/plug-ins`.
-- Copy `./scripts/AEdcCameraInfernoTemplate.mel` into the directory `${HOME}/maya/<maya version>/scripts`.
-- Copy `./python/dcCameraInferno` into the directory `${HOME}/maya/<maya version>/scripts`.
-
-Both Windows and Linux are supported, and Maya 2017 and 2018 have been tested.
+Please follow the instructions in
+[INSTALL.md](https://github.com/david-cattermole/mayaMatchMoveSolver/blob/master/INSTALL.md)
+to install _Camera Inferno_.
 
 # Known Issues
 
@@ -280,4 +274,3 @@ Both Windows and Linux are supported, and Maya 2017 and 2018 have been tested.
 - Ability to add static images to the burn-in, such as a logo.
 - Ability to draw directly on-top of the image, rather than needing to
   worry about clipping planes or objects near/far from camera.
-- Use Maya "Modules" to simplify installation of the scripts and plug-in.
