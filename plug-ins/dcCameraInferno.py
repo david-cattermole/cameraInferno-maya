@@ -2411,22 +2411,23 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             draw_manager.endDrawable()
 
         # Draw fields.
-        draw_manager.beginDrawable()
-        for field_data in fields_data:
-            self.draw_field(
-                draw_manager,
-                text_size_multiplier,
-                point_size_multiplier,
-                line_width_multiplier,
-                field_data,
-                field_general_values,
-                obj_path,
-                lower_left_px, lower_right_px,
-                upper_left_px, upper_right_px,
-                film_width_px, film_height_px,
-                film_lower_left_px, film_upper_right_px,
-                port_width, port_height)
-        draw_manager.endDrawable()
+        if len(fields_data):
+            draw_manager.beginDrawable()
+            for field_data in fields_data:
+                self.draw_field(
+                    draw_manager,
+                    text_size_multiplier,
+                    point_size_multiplier,
+                    line_width_multiplier,
+                    field_data,
+                    field_general_values,
+                    obj_path,
+                    lower_left_px, lower_right_px,
+                    upper_left_px, upper_right_px,
+                    film_width_px, film_height_px,
+                    film_lower_left_px, film_upper_right_px,
+                    port_width, port_height)
+            draw_manager.endDrawable()
         return
 
 
