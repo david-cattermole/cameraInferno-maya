@@ -19,25 +19,36 @@
 global proc AEdcCameraInfernoTemplate(string $nodeName) {
     editorTemplate -beginScrollLayout;
 
-
-    editorTemplate -beginLayout "Node Attributes" -collapse 1;
-        editorTemplate -beginLayout "Input Values" -collapse 1;
-            editorTemplate -label "Scene Scale" -addControl "sceneScale";
-            editorTemplate -label "Frames Per-Second" -addControl "framesPerSecond";
-            editorTemplate -label "Ground Height" -addControl "groundHeight";
-            editorTemplate -label "Camera Speed (Raw)" -addControl "cameraSpeedRaw";
-        editorTemplate -endLayout;
-
-        editorTemplate -beginLayout "HUD Size" -collapse 1;
-            editorTemplate -label "Text Size" -addControl "textSize";
-            editorTemplate -label "Point Size" -addControl "pointSize";
-            editorTemplate -label "Line Width" -addControl "lineWidth";
-        editorTemplate -endLayout;
-
-        editorTemplate -label "Film Gate" -addControl "filmGate";
-        editorTemplate -label "Mask" -addControl "mask";
-        editorTemplate -label "Fields" -addControl "field";
+    editorTemplate -beginLayout "Input Values" -collapse 0;
+        editorTemplate -label "Scene Scale" -addControl "sceneScale";
+        editorTemplate -label "Frames Per-Second" -addControl "framesPerSecond";
+        editorTemplate -label "Ground Height" -addControl "groundHeight";
+        editorTemplate -label "Camera Speed (Raw)" -addControl "cameraSpeedRaw";
     editorTemplate -endLayout;
+
+    editorTemplate -beginLayout "HUD Size" -collapse 0;
+        /* editorTemplate -label "Draw Depth" -addControl "depth"; */
+        editorTemplate -label "Text Size" -addControl "textSize";
+        editorTemplate -label "Point Size" -addControl "pointSize";
+        editorTemplate -label "Line Width" -addControl "lineWidth";
+    editorTemplate -endLayout;
+
+    editorTemplate -beginLayout "Film Gate" -collapse 0;
+        editorTemplate -label "Enable" -addControl "filmGateEnable";
+        editorTemplate -label "Color" -addControl "filmGateColor";
+        editorTemplate -label "Alpha" -addControl "filmGateAlpha";
+    editorTemplate -endLayout;
+
+    editorTemplate -beginLayout "Mask" -collapse 0;
+        editorTemplate -label "Enable" -addControl "maskEnable";
+        editorTemplate -label "Top" -addControl "maskEnableTop";
+        editorTemplate -label "Bottom" -addControl "maskEnableBottom";
+        editorTemplate -label "Aspect Ratio" -addControl "maskAspectRatio";
+        editorTemplate -label "Color" -addControl "maskColor";
+        editorTemplate -label "Alpha" -addControl "maskAlpha";
+    editorTemplate -endLayout;
+
+    editorTemplate -label "Fields" -addControl "field";
 
     // Base class attributes
     AEdependNodeTemplate $nodeName;
