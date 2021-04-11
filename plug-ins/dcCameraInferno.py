@@ -276,8 +276,6 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         cAttr = OpenMaya.MFnCompoundAttribute()
         eAttr = OpenMaya.MFnEnumAttribute()
         gAttr = OpenMaya.MFnGenericAttribute()
-        uAttr = OpenMaya.MFnUnitAttribute()
-        mAttr = OpenMaya.MFnMessageAttribute()
 
         # Text Size
         HUDNode.m_text_size = nAttr.create(
@@ -370,6 +368,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         nAttr.writable = True
         nAttr.storable = True
         nAttr.keyable = False
+        nAttr.default = (0.0, 0.0, 0.0)
 
         # Film Gate Alpha attribute
         HUDNode.m_film_gate_alpha = nAttr.create(
@@ -379,6 +378,8 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         nAttr.writable = True
         nAttr.storable = True
         nAttr.keyable = True
+        nAttr.setMin(0.0)
+        nAttr.setMax(1.0)
 
         # Film Gate attribute
         HUDNode.m_film_gate = cAttr.create("filmGate", "flmgt")
@@ -435,6 +436,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         nAttr.writable = True
         nAttr.storable = True
         nAttr.keyable = False
+        nAttr.default = (0.0, 0.0, 0.0)
 
         # Mask Alpha attribute
         HUDNode.m_mask_alpha = nAttr.create(
@@ -444,6 +446,8 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         nAttr.writable = True
         nAttr.storable = True
         nAttr.keyable = True
+        nAttr.setMin(0.0)
+        nAttr.setMax(1.0)
 
         # Mask attribute
         HUDNode.m_mask = cAttr.create("mask", "msk")
@@ -517,6 +521,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         nAttr.writable = True
         nAttr.storable = True
         nAttr.keyable = False
+        nAttr.default = (1.0, 1.0, 1.0)
 
         # Field Point Alpha attribute
         HUDNode.m_field_point_alpha = nAttr.create(
@@ -526,6 +531,8 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         nAttr.writable = True
         nAttr.storable = True
         nAttr.keyable = True
+        nAttr.setMin(0.0)
+        nAttr.setMax(1.0)
 
         # Field Line Width attribute
         #
@@ -541,7 +548,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         nAttr.storable = True
         nAttr.keyable = True
 
-        # Field Line_Style attribute
+        # Field Line Style attribute
         HUDNode.m_field_line_style = eAttr.create(
             "fieldLineStyle", "fldlnstyl",
             OpenMayaRender.MUIDrawManager.kSolid)
@@ -559,6 +566,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         nAttr.writable = True
         nAttr.storable = True
         nAttr.keyable = False
+        nAttr.default = (1.0, 1.0, 1.0)
 
         # Field Line Alpha attribute
         HUDNode.m_field_line_alpha = nAttr.create(
@@ -568,6 +576,8 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         nAttr.writable = True
         nAttr.storable = True
         nAttr.keyable = True
+        nAttr.setMin(0.0)
+        nAttr.setMax(1.0)
 
         # Field Text Align attribute
         HUDNode.m_field_text_align = eAttr.create(
@@ -634,6 +644,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         nAttr.writable = True
         nAttr.storable = True
         nAttr.keyable = False
+        nAttr.default = (1.0, 1.0, 1.0)
 
         # Field Text Alpha attribute
         HUDNode.m_field_text_alpha = nAttr.create(
@@ -643,6 +654,8 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
         nAttr.writable = True
         nAttr.storable = True
         nAttr.keyable = True
+        nAttr.setMin(0.0)
+        nAttr.setMax(1.0)
 
         # Field Text Value attribute
         string_data = OpenMaya.MFnStringData()
@@ -767,7 +780,7 @@ class HUDNode(OpenMayaUI.MPxLocatorNode):
 
 
 class HUDNodeData(OpenMaya.MUserData):
-    """Custom data to be persisteted after each draw call."""
+    """Custom data to be persisted after each draw call."""
     def __init__(self):
         delete_after_use = False
         super(HUDNodeData, self).__init__(delete_after_use)
@@ -1761,6 +1774,7 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
 
     @staticmethod
     def draw_film_gate(draw_manager,
+                       near_clip,
                        color, alpha,
                        projection_inverse_matrix,
                        lower_left, lower_right,
@@ -1768,10 +1782,16 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
                        film_width, film_height,
                        film_lower_left, film_upper_right,
                        port_width, port_height):
+        depth_matrix = OpenMaya.MMatrix(
+            ((near_clip, 0, 0, 0),
+             (0, near_clip, 0, 0),
+             (0, 0, near_clip, 0),
+             (0, 0, 0, near_clip))
+        )
+
         port_width = 1.0
         port_height = 1.0
         depth = 1.0
-
         positions = OpenMaya.MPointArray()
         positions.append(OpenMaya.MPoint(-1, -1, depth))
         positions.append(OpenMaya.MPoint(-1, port_height + 1, depth))
@@ -1807,7 +1827,7 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
 
         view_positions = OpenMaya.MPointArray(positions)
         for i, position in enumerate(positions):
-            view_positions[i] = position * projection_inverse_matrix
+            view_positions[i] = position * depth_matrix * projection_inverse_matrix
 
         draw_color = OpenMaya.MColor((color[0], color[1], color[2], alpha))
         draw_manager.setColor(draw_color)
@@ -1818,6 +1838,7 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
     @classmethod
     def draw_mask(cls,
                   draw_manager,
+                  near_clip,
                   draw_top,
                   draw_bottom,
                   aspect_ratio,
@@ -1829,6 +1850,12 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
                   film_lower_left_screen, film_upper_right_screen,
                   port_width, port_height):
         aspect = (film_width_screen / film_height_screen) / aspect_ratio
+        depth_matrix = OpenMaya.MMatrix(
+            ((near_clip, 0, 0, 0),
+             (0, near_clip, 0, 0),
+             (0, 0, near_clip, 0),
+             (0, 0, 0, near_clip))
+        )
 
         depth = 1.0
         positions = OpenMaya.MPointArray()
@@ -1865,7 +1892,7 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
 
         view_positions = OpenMaya.MPointArray(positions)
         for i, position in enumerate(positions):
-            view_positions[i] = position * projection_inverse_matrix
+            view_positions[i] = position * depth_matrix * projection_inverse_matrix
 
         prim = OpenMayaRender.MUIDrawManager.kTriangles
         draw_manager.mesh(prim, view_positions)
@@ -2245,6 +2272,7 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
         if valid_camera is False:
             return
         camera_fn = OpenMaya.MFnCamera(camera_path)
+        near_clip = camera_fn.nearClippingPlane + 0.0001
 
         matrix_type = OpenMayaRender.MFrameContext.kProjectionInverseMtx
         projection_inverse_matrix = frame_context.getMatrix(matrix_type)
@@ -2347,9 +2375,10 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             mask_aspect_ratio = user_data.m_mask_aspect_ratio
             self.draw_mask(
                 draw_manager,
+                near_clip,
                 mask_draw_top, mask_draw_bottom,
                 mask_aspect_ratio,
-                mask_color, mask_alpha,
+                mask_color, min(mask_alpha, 0.99999),
                 projection_inverse_matrix,
                 lower_left_screen, lower_right_screen,
                 upper_left_screen, upper_right_screen,
@@ -2366,7 +2395,8 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             film_gate_alpha = user_data.m_film_gate_alpha
             self.draw_film_gate(
                 draw_manager,
-                film_gate_color, film_gate_alpha,
+                near_clip,
+                film_gate_color, min(film_gate_alpha, 0.99999),
                 projection_inverse_matrix,
                 lower_left_screen, lower_right_screen,
                 upper_left_screen, upper_right_screen,
