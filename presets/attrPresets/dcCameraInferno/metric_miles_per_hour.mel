@@ -47,7 +47,6 @@ blendAttr "filmGateAlpha" 0.5;
 blendAttr "maskEnable" 1; 
 blendAttr "maskEnableTop" 1; 
 blendAttr "maskEnableBottom" 1; 
-blendAttr "maskAspectRatio" 2.39; 
 blendAttr "maskColorR" 0; 
 blendAttr "maskColorG" 0; 
 blendAttr "maskColorB" 0; 
