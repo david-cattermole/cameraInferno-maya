@@ -24,26 +24,31 @@ Usage::
 
 2) Parent transform under camera transform node.
 
-Note: you may get a list of font names for your computer with this Python command:
+Note: you may get a list of font names for your computer with this Python
+command:
 
    import maya.api.OpenMayaRender
-   print maya.api.OpenMayaRender.MUIDrawManager.getFontList()
+   print(maya.api.OpenMayaRender.MUIDrawManager.getFontList())
 
 And here you can get a list of icon names.
 
    import maya.api.OpenMayaRender
-   print maya.api.OpenMayaRender.MUIDrawManager.getIconNames()
+   print(maya.api.OpenMayaRender.MUIDrawManager.getIconNames())
 
 """
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import datetime
 import math
 import collections
 import getpass
-import maya.cmds
 import os
 import string
 
+import maya.cmds
 import maya.api.OpenMaya as OpenMaya
 import maya.api.OpenMayaUI as OpenMayaUI
 import maya.api.OpenMayaRender as OpenMayaRender
