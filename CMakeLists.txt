@@ -35,6 +35,7 @@ add_subdirectory(modules)
 add_subdirectory(plug-ins)
 add_subdirectory(python)
 add_subdirectory(scripts)
+add_subdirectory(presets)
 
 # Install misc files
 #
