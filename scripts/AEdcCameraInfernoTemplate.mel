@@ -27,7 +27,6 @@ global proc AEdcCameraInfernoTemplate(string $nodeName) {
     editorTemplate -endLayout;
 
     editorTemplate -beginLayout "HUD Size" -collapse 0;
-        /* editorTemplate -label "Draw Depth" -addControl "depth"; */
         editorTemplate -label "Text Size" -addControl "textSize";
         editorTemplate -label "Point Size" -addControl "pointSize";
         editorTemplate -label "Line Width" -addControl "lineWidth";
