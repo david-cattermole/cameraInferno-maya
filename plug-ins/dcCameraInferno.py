@@ -52,12 +52,14 @@ import maya.cmds
 import maya.api.OpenMaya as OpenMaya
 import maya.api.OpenMayaUI as OpenMayaUI
 import maya.api.OpenMayaRender as OpenMayaRender
+from six.moves import range
+from six.moves import zip
 
 # Registered Node Id.
 PLUGIN_NODE_ID = 0x0012F183
 PLUGIN_NODE_NAME = "dcCameraInferno"
 PLUGIN_NODE_AUTHOR_STRING = "David Cattermole"
-PLUGIN_NODE_VERSION_STRING = "0.3.0"
+PLUGIN_NODE_VERSION_STRING = "0.4.0"
 
 # Types of field indices.
 FIELD_TYPE_NONE_INDEX = 0
@@ -2339,7 +2341,7 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
         # Generate array of field data, to unwraped and read in
         # self.draw_field.
         field_general_values = dict(user_data.m_field_general_values)
-        fields_data = zip(
+        fields_data = list(zip(
             user_data.m_field_enable,
             user_data.m_field_type,
             user_data.m_field_pos_a,
@@ -2367,7 +2369,7 @@ class HUDNodeDrawOverride(OpenMayaRender.MPxDrawOverride):
             user_data.m_field_value_b,
             user_data.m_field_value_c,
             user_data.m_field_value_d,
-        )
+        ))
 
         # Draw Mask.
         mask_enable = user_data.m_mask_enable

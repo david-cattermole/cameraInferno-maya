@@ -36,6 +36,7 @@ Each on-screen value should have the following functionality::
 
 """
 
+from __future__ import absolute_import
 import maya.cmds
 import dcCameraInferno.tool as tool
 
