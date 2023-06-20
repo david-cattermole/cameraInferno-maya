@@ -21,6 +21,7 @@ This is a port of the C++ 'velocity' node to Maya Python API 2.0.
 https://github.com/david-cattermole/velocity-maya
 """
 
+from __future__ import absolute_import
 import math
 
 import maya.api.OpenMaya as OpenMaya
