@@ -27,11 +27,11 @@ SETLOCAL
 ::       however files copying to "My Documents" automatically go
 ::       to the "Documents" directory.
 ::
-:: The "$HOME/maya/2020/modules" directory is automatically searched
+:: The "$HOME/maya/2022/modules" directory is automatically searched
 :: for Maya module (.mod) files. Therefore we can install directly.
 ::
 :: SET INSTALL_MODULE_DIR="%PROJECT_ROOT%\modules"
-SET INSTALL_MODULE_DIR="%USERPROFILE%\My Documents\maya\2020\modules"
+SET INSTALL_MODULE_DIR="%USERPROFILE%\My Documents\maya\2022\modules"
 
 :: Do not edit below, unless you know what you're doing.
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

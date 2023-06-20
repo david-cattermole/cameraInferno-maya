@@ -22,10 +22,10 @@
 
 # Where to install the module?
 #
-# The "$HOME/maya/2020/modules" directory is automatically searched
+# The "$HOME/maya/2022/modules" directory is automatically searched
 # for Maya module (.mod) files. Therefore we can install directly.
 #
-INSTALL_MODULE_DIR=${HOME}/maya/2020/modules
+INSTALL_MODULE_DIR=${HOME}/maya/2022/modules
 
 # Do not edit below, unless you know what you're doing.
 ###############################################################################
