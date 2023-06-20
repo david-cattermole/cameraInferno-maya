@@ -52,8 +52,6 @@ import maya.cmds
 import maya.api.OpenMaya as OpenMaya
 import maya.api.OpenMayaUI as OpenMayaUI
 import maya.api.OpenMayaRender as OpenMayaRender
-from six.moves import range
-from six.moves import zip
 
 # Registered Node Id.
 PLUGIN_NODE_ID = 0x0012F183
