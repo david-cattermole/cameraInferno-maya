@@ -57,7 +57,7 @@ import maya.api.OpenMayaRender as OpenMayaRender
 PLUGIN_NODE_ID = 0x0012F183
 PLUGIN_NODE_NAME = "dcCameraInferno"
 PLUGIN_NODE_AUTHOR_STRING = "David Cattermole"
-PLUGIN_NODE_VERSION_STRING = "0.4.0"
+PLUGIN_NODE_VERSION_STRING = "0.4.1"
 
 # Types of field indices.
 FIELD_TYPE_NONE_INDEX = 0
